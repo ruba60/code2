@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:ooo/medicile_inventory/main_view_equipment_inventory.dart';
-import 'package:ooo/medicile_inventory/main_view_medicile_inventory.dart';
+import 'package:ooo/views/medicile_inventory/main_view_equipment_inventory.dart';
+import 'package:ooo/views/medicile_inventory/main_view_medicile_inventory.dart';
+
 
 class HomePageInventory extends StatefulWidget {
   const HomePageInventory({super.key});

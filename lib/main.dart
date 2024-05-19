@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ooo/medicile_inventory/home_page_inventory.dart';
+
+import 'package:ooo/views/medicile_inventory/home_page_inventory.dart';
 
 
 
