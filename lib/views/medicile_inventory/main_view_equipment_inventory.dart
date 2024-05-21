@@ -134,14 +134,14 @@ class _MainViewEquipmentInventoryState extends State<MainViewEquipmentInventory>
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              String name;
-              String description;
-              int quantity;
-              DateTime expiryDate;
-              String company ;
+              // String name;
+              // String description;
+              // int quantity;
+              // DateTime expiryDate;
+              // String company ;
               return AlertDialog(
-                title: Text('إضافة مادة جديدة '),
-                content: Container(
+                title:const Text('إضافة مادة جديدة '),
+                content:  Container(
                   width:MediaQuery.of(context).size.width * 0.4,
                   child: SingleChildScrollView(
                     child: Column(
@@ -149,9 +149,9 @@ class _MainViewEquipmentInventoryState extends State<MainViewEquipmentInventory>
                       children: [
                         TextField(
                           controller: name_Equipment_Controller,
-                          decoration: InputDecoration(labelText: 'الاسم '),
+                          decoration: const InputDecoration(labelText: 'الاسم '),
                           onChanged: (value) {
-                            name = value;
+                    //        String  name = value;
                           },
                         ),
                         TextField(
@@ -159,30 +159,30 @@ class _MainViewEquipmentInventoryState extends State<MainViewEquipmentInventory>
 
                           decoration: InputDecoration(labelText: 'الوصف'),
                           onChanged: (value) {
-                            description = value;
+                        //  String description = value;
                           },
                         ),
                         TextField(
                           controller: quantity_Equipment_Controller,
-                          decoration: InputDecoration(labelText: 'الكمية '),
+                          decoration: const InputDecoration(labelText: 'الكمية '),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            quantity = value as int;
+                       //  int  quantity = value as int;
                           },
                         ),
                         TextField(
                           controller: expiryDate_Equipment_Controller,
-                          decoration: InputDecoration(labelText: 'تاريخ الانتهاء(YYYY-MM-DD)'),
+                          decoration:const InputDecoration(labelText: 'تاريخ الانتهاء(YYYY-MM-DD)'),
                           keyboardType: TextInputType.datetime,
                           onChanged: (value) {
-                            expiryDate = value as DateTime;
+                       //  DateTime  expiryDate = value as DateTime;
                           },
                         ),
                         TextField(
                           controller: company_Equipment_Controller,
                           decoration: InputDecoration(labelText: 'الشركة المصنعة'),
                           onChanged: (value) {
-                            company = value;
+                         //  String company = value;
                           },
                         ),
                       ],
@@ -191,16 +191,26 @@ class _MainViewEquipmentInventoryState extends State<MainViewEquipmentInventory>
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('إلغاء'),
+                    child: const Text('إلغاء'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
-                    child: Text('إضافة'),
+                    child: const Text('إضافة'),
                     onPressed: () {
 
-
+                      setState(() {
+                        equipment.add(Equipment(
+                          name_Equipment_Controller.text,
+                          description_Equipment_Controller.text,
+                          int.parse(quantity_Equipment_Controller.text),
+                          DateTime.parse(expiryDate_Equipment_Controller.text),
+                          company_Equipment_Controller.text,
+                        ));
+                        filteredEquipment = equipment;
+                      });
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
@@ -208,7 +218,7 @@ class _MainViewEquipmentInventoryState extends State<MainViewEquipmentInventory>
             },
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
 
 // ... (الكود السابق)

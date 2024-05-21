@@ -1,23 +1,37 @@
-
 import 'package:flutter/material.dart';
 
-
-
 class MainViewMedicilInventory extends StatefulWidget {
-   const MainViewMedicilInventory({super.key});
+  const MainViewMedicilInventory({super.key});
 
   @override
-  State<MainViewMedicilInventory> createState() => _MainViewMedicilInventoryState();
+  State<MainViewMedicilInventory> createState() =>
+      _MainViewMedicilInventoryState();
 }
 
 class _MainViewMedicilInventoryState extends State<MainViewMedicilInventory> {
   List<Drug> drugs = [
-    Drug('Paracetamol', 'Used to treat pain and fever.', 50, DateTime(2023, 12, 31), 'samsoung',),
-    Drug('Amoxicillin', 'Used to treat bacterial infections.', 30, DateTime(2024, 6, 30), 'samsoung',),
-    Drug('Loratadine', 'Used to treat allergies.', 20, DateTime(2023, 8, 15), 'samsoung' ,),
+    Drug(
+      'Paracetamol',
+      'Used to treat pain and fever.',
+      50,
+      DateTime(2023, 12, 31),
+      'samsoung',
+    ),
+    Drug(
+      'Amoxicillin',
+      'Used to treat bacterial infections.',
+      30,
+      DateTime(2024, 6, 30),
+      'samsoung',
+    ),
+    Drug(
+      'Loratadine',
+      'Used to treat allergies.',
+      20,
+      DateTime(2023, 8, 15),
+      'samsoung',
+    ),
   ];
-
-
 
   List<Drug> filteredDrugs = [];
 
@@ -28,11 +42,18 @@ class _MainViewMedicilInventoryState extends State<MainViewMedicilInventory> {
   TextEditingController expiryDate_drag_Controller = TextEditingController();
   TextEditingController company_drag_Controller = TextEditingController();
 
-
   @override
   void initState() {
     filteredDrugs = drugs;
     super.initState();
+  }
+
+  void _showEditDrugDialog(Drug drug) {
+    name_drag_Controller.text = drug.name;
+    description_drag_Controller.text = drug.description;
+    quantity_drag_Controller.text = drug.quantity.toString();
+    expiryDate_drag_Controller.text = drug.expiryDate.toIso8601String();
+    company_drag_Controller.text = drug.company;
   }
 
   @override
@@ -44,32 +65,30 @@ class _MainViewMedicilInventoryState extends State<MainViewMedicilInventory> {
       // ),
       body: Column(
         children: [
-
           Container(
             // padding: EdgeInsets.all(50),
-            padding: EdgeInsets.symmetric(vertical: 15 , horizontal: 50 ),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
             child: TextFormField(
               controller: searchController,
               decoration: InputDecoration(
                 fillColor: Colors.grey.shade100,
                 filled: true,
-                label: Text('البحث عن دواء'),
-                prefixIcon: Icon(Icons.search),
+                label: const Text('البحث عن دواء'),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
               ),
-
               onChanged: (value) {
                 setState(() {
                   filteredDrugs = drugs
                       .where((drug) =>
-                      drug.name.toLowerCase().contains(value.toLowerCase()))
+                          drug.name.toLowerCase().contains(value.toLowerCase()))
                       .toList();
                 });
               },
             ),
-            ),
+          ),
 
           // TextField(
           //   controller: searchController,
@@ -87,7 +106,7 @@ class _MainViewMedicilInventoryState extends State<MainViewMedicilInventory> {
           // ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 20 ,horizontal: 40),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
               itemCount: drugs.length,
               itemBuilder: (context, index) {
                 return Container(
@@ -97,32 +116,94 @@ class _MainViewMedicilInventoryState extends State<MainViewMedicilInventory> {
                     subtitle: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
-
                       children: [
                         Text('الوصف: ${drugs[index].description}'),
                         Text('الكمية: ${drugs[index].quantity}'),
-                        Text('تاريخ الانتهاء: ${drugs[index].expiryDate.toString()}'),
+                        Text(
+                            'تاريخ الانتهاء: ${drugs[index].expiryDate.toString()}'),
                         Text('الشركة المصنعة : ${drugs[index].company}'),
-
                       ],
-
                     ),
-                    trailing:IconButton (
-                      icon: Icon(Icons.mode_edit_outline_outlined),
-                      onPressed: (){
-
-                      },
-                    ),
+                    trailing: IconButton(
+                        icon: const Icon(Icons.mode_edit_outline_outlined),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Edit Drug'),
+                                content: SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFormField(
+                                          controller: name_drag_Controller,
+                                          decoration: InputDecoration(
+                                              labelText: 'Drug Name'),
+                                        ),
+                                        TextFormField(
+                                          controller: description_drag_Controller,
+                                          decoration: InputDecoration(
+                                              labelText: 'Description'),
+                                        ),
+                                        TextFormField(
+                                          controller: quantity_drag_Controller,
+                                          decoration: InputDecoration(
+                                              labelText: 'Quantity'),
+                                        ),
+                                        TextFormField(
+                                          controller: expiryDate_drag_Controller,
+                                          decoration: InputDecoration(
+                                              labelText: 'Expiry Date'),
+                                        ),
+                                        TextFormField(
+                                          controller: company_drag_Controller,
+                                          decoration: InputDecoration(
+                                              labelText: 'Company'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      // Update the drug information
+                                      // setState(() {
+                                      // drug.name = name_drag_Controller.text;
+                                      // drug.description = description_drag_Controller.text;
+                                      // drug.quantity = int.parse(quantity_drag_Controller.text);
+                                      // drug.expiryDate = DateTime.parse(expiryDate_drag_Controller.text);
+                                      // drug.company = company_drag_Controller.text;
+                                      // });
+                                      // Dismiss the dialog
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Save'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Dismiss the dialog without saving changes
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }),
                     // onTap: () {
                     //   // Edit drug functionality goes here
                     //   // You can show a dialog or navigate to a new screen to edit the drug details
                     // },
-
                   ),
                 );
-
               },
-
             ),
           ),
         ],
@@ -134,55 +215,58 @@ class _MainViewMedicilInventoryState extends State<MainViewMedicilInventory> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              String name;
-              String description;
-              int quantity;
-              DateTime expiryDate;
-              String company ;
+              // String name;
+              // String description;
+              // int quantity;
+              // DateTime expiryDate;
+              // String company;
               return AlertDialog(
-                title: Text('إضافة دواء جديد '),
-                content: Container(
-                  width:MediaQuery.of(context).size.width * 0.4,
+                title: const Text('إضافة دواء جديد '),
+                content: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.4,
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextField(
                           controller: name_drag_Controller,
-                          decoration: InputDecoration(labelText: 'الاسم '),
+                          decoration:
+                              const InputDecoration(labelText: 'الاسم '),
                           onChanged: (value) {
-                            name = value;
+                            String name = value;
                           },
                         ),
                         TextField(
                           controller: description_drag_Controller,
-
-                          decoration: InputDecoration(labelText: 'الوصف'),
+                          decoration: const InputDecoration(labelText: 'الوصف'),
                           onChanged: (value) {
-                            description = value;
+                            String description = value;
                           },
                         ),
                         TextField(
                           controller: quantity_drag_Controller,
-                          decoration: InputDecoration(labelText: 'الكمية '),
-                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(labelText: 'الكمية '),
+                        //  keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            quantity = value as int;
+                            int quantity = value as int;
                           },
                         ),
                         TextField(
                           controller: expiryDate_drag_Controller,
-                          decoration: InputDecoration(labelText: 'تاريخ الانتهاء(YYYY-MM-DD)'),
-                          keyboardType: TextInputType.datetime,
+                          decoration: const InputDecoration(
+                              labelText: 'تاريخ الانتهاء(YYYY-MM-DD)'),
+                      //    keyboardType: TextInputType.datetime,
                           onChanged: (value) {
-                            expiryDate = value as DateTime;
+                            DateTime expiryDate = DateTime.parse(value);
                           },
                         ),
                         TextField(
                           controller: company_drag_Controller,
-                          decoration: InputDecoration(labelText: 'الشركة المصنعة'),
+                          decoration: const InputDecoration(
+                              labelText: 'الشركة المصنعة'),
                           onChanged: (value) {
-                            company = value;
+                            String company = value;
                           },
                         ),
                       ],
@@ -191,16 +275,25 @@ class _MainViewMedicilInventoryState extends State<MainViewMedicilInventory> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('إلغاء'),
+                    child: const Text('إلغاء'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
-                    child: Text('إضافة'),
+                    child: const Text('إضافة'),
                     onPressed: () {
-
-
+                      setState(() {
+                        drugs.add(Drug(
+                          name_drag_Controller.text,
+                          description_drag_Controller.text,
+                          int.parse(quantity_drag_Controller.text),
+                          DateTime.parse(expiryDate_drag_Controller.text),
+                          company_drag_Controller.text,
+                        ));
+                        filteredDrugs = drugs;
+                      });
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
@@ -208,20 +301,21 @@ class _MainViewMedicilInventoryState extends State<MainViewMedicilInventory> {
             },
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
 
 // ... (الكود السابق)
-
     );
   }
 }
+
 class Drug {
   String name;
   String description;
   int quantity;
   DateTime expiryDate;
-  String company ;
+  String company;
 
-  Drug(this.name, this.description, this.quantity, this.expiryDate, this.company );
+  Drug(this.name, this.description, this.quantity, this.expiryDate,
+      this.company);
 }

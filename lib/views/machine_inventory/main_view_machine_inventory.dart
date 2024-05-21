@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class MainViewMachine extends StatefulWidget {
@@ -35,7 +35,7 @@ class _MainViewMachineState extends State<MainViewMachine> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text('مستودع الأجهزة '),
+        title: const Text('مستودع الأجهزة '),
         backgroundColor: Colors.cyan,
       ),
       body: Column(
@@ -43,14 +43,14 @@ class _MainViewMachineState extends State<MainViewMachine> {
 
           Container(
 
-            padding: EdgeInsets.symmetric(vertical: 15 , horizontal: 100 ),
+            padding: const EdgeInsets.symmetric(vertical: 15 , horizontal: 100 ),
             child: TextFormField(
               controller: searchController,
               decoration: InputDecoration(
                 fillColor: Colors.grey.shade100,
                 filled: true,
-                label: Text('البحث عن جهاز'),
-                prefixIcon: Icon(Icons.search),
+                label: const Text('البحث عن جهاز'),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
@@ -69,7 +69,7 @@ class _MainViewMachineState extends State<MainViewMachine> {
           Expanded(
 
             child: ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 10 ,horizontal: 40),
+              padding: const EdgeInsets.symmetric(vertical: 10 ,horizontal: 40),
               itemCount: machine.length,
               itemBuilder: (context, index) {
                 return Container(
@@ -90,7 +90,7 @@ class _MainViewMachineState extends State<MainViewMachine> {
 
                     ),
                     trailing:IconButton (
-                      icon: Icon(Icons.mode_edit_outline_outlined),
+                      icon: const Icon(Icons.mode_edit_outline_outlined),
                       onPressed: (){
 
                       },
@@ -117,14 +117,14 @@ class _MainViewMachineState extends State<MainViewMachine> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              String name;
-              String description;
-              int quantity;
-              DateTime expiryDate;
-              String company ;
+              // String name;
+              // String description;
+              // int quantity;
+              // DateTime expiryDate;
+              // String company ;
               return AlertDialog(
-                title: Text('إضافة جهاز جديد'),
-                content: Container(
+                title: const Text('إضافة جهاز جديد'),
+                content: SizedBox(
                   width:MediaQuery.of(context).size.width * 0.4,
                   child: SingleChildScrollView(
                     child: Column(
@@ -132,40 +132,40 @@ class _MainViewMachineState extends State<MainViewMachine> {
                       children: [
                         TextField(
                           controller: name_machine_Controller,
-                          decoration: InputDecoration(labelText: 'الاسم'),
+                          decoration: const InputDecoration(labelText: 'الاسم'),
                           onChanged: (value) {
-                            name = value;
+                       //     var name = value;
                           },
                         ),
                         TextField(
                           controller: description_machine_Controller,
 
-                          decoration: InputDecoration(labelText: 'الوصف'),
+                          decoration: const InputDecoration(labelText: 'الوصف'),
                           onChanged: (value) {
-                            description = value;
+                        //    var description = value;
                           },
                         ),
                         TextField(
                           controller: quantity_machine_Controller,
-                          decoration: InputDecoration(labelText: 'الكمية'),
+                          decoration:const InputDecoration(labelText: 'الكمية'),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            quantity = value as int;
+                         //   var quantity = value as int;
                           },
                         ),
                         TextField(
                           controller: expiryDate_machine_Controller,
-                          decoration: InputDecoration(labelText: 'تاريخ الانتهاء (YYYY-MM-DD)'),
+                          decoration: const InputDecoration(labelText: 'تاريخ الانتهاء (YYYY-MM-DD)'),
                           keyboardType: TextInputType.datetime,
                           onChanged: (value) {
-                            expiryDate = value as DateTime;
+                          //  var expiryDate = value as DateTime;
                           },
                         ),
                         TextField(
                           controller: company_machine_Controller,
-                          decoration: InputDecoration(labelText: 'الشركة المصنعة'),
+                          decoration: const InputDecoration(labelText: 'الشركة المصنعة'),
                           onChanged: (value) {
-                            company = value;
+                         //   var company = value;
                           },
                         ),
                       ],
@@ -174,16 +174,26 @@ class _MainViewMachineState extends State<MainViewMachine> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('إلغاء'),
+                    child: const Text('إلغاء'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
-                    child: Text('إضافة'),
+                    child: const Text('إضافة'),
                     onPressed: () {
 
-
+                      setState(() {
+                        machine.add(Machine(
+                          name_machine_Controller.text,
+                          description_machine_Controller.text,
+                          int.parse(quantity_machine_Controller.toString()),
+                          DateTime.parse(expiryDate_machine_Controller.text),
+                          company_machine_Controller.text,
+                        ));
+                        filteredMachine = machine;
+                      });
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
@@ -191,7 +201,7 @@ class _MainViewMachineState extends State<MainViewMachine> {
             },
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
